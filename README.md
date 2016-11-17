@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/swallowws/rest-server.svg?branch=master)](https://travis-ci.org/swallowws/rest-server)
+
 # REST-server
 *Can be used for Telegram-bots*
 
