@@ -1,6 +1,6 @@
 # REST-server
+*Can be used for Telegram-bots*
 
-Can be used for Telegram-bots
 
 ### Compiling and running:
 ```
