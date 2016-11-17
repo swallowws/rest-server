@@ -8,4 +8,6 @@ install:
   - go get github.com/go-sql-driver/mysql
   - go get github.com/BurntSushi/toml
 
-test: go build rest-server.go
+test:
+  - go build rest-server.go
+  - go test -v ./
