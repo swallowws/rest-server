@@ -2,8 +2,14 @@
 
 ### Compiling and running:
 ```
-  go run rest-server.go
+  go build rest-server.go
+  ./rest-server
 ```
+or
+```
+go run rest-server.go
+```
+
 ### `GET`-request on a client side:
 ```
 $ curl -i localhost:8080/api/get
