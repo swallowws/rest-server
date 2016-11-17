@@ -1,36 +1,56 @@
 package main
 
 import (
-    "github.com/ant0ine/go-json-rest/rest"
-    _ "github.com/go-sql-driver/mysql"
     "database/sql"
     "log"
     "net/http"
-    "errors"
+    
+    "github.com/ant0ine/go-json-rest/rest"
+    _ "github.com/go-sql-driver/mysql"
+    "github.com/BurntSushi/toml"
+    
 )
 
-func get_weather() (map[string]string, error) {
+
+type tomlConfig struct {
+    User string
+    Passwd string
+    Database string
+}
+
+
+func readConfig(config_file string) tomlConfig {
+    
+    var config tomlConfig
+    if _, err := toml.DecodeFile(config_file, &config); err != nil {
+        log.Fatal(err)
+    }
+    return config
+}
+
+
+func getWeather(User, Passwd, Database string) (map[string]string, error) {
     
     weather := make(map[string]string)
-    
-    db, err := sql.Open("mysql", "weewx:weewx@/weewx")
+    db, err := sql.Open("mysql", User+":"+Passwd+"@/"+Database)
     if err != nil {
-        return weather, errors.New("Can`t connect to database")
-        }
-    
+        return weather, err
+    }
+    defer db.Close()
+
     err = db.Ping()
     if err != nil {
-        return weather, errors.New("Can`t connect to database")
+        return weather, err
     }
     
     rows, err := db.Query("SELECT * FROM raw LIMIT 1")
     if err != nil {
-        return weather, errors.New("Can`t get data from database")
+        return weather, err
     }
     
     columns, err := rows.Columns()
     if err != nil {
-        return weather, log.Fatal(err)
+        return weather, err
     }
     
     values := make([]sql.RawBytes, len(columns))
@@ -43,7 +63,7 @@ func get_weather() (map[string]string, error) {
     for rows.Next() {
         err = rows.Scan(scanArgs...)
         if err != nil {
-            return weather, log.Fatal(err)
+            return weather, err
         }
         
         for i, col := range values {
@@ -54,16 +74,27 @@ func get_weather() (map[string]string, error) {
             }
         }
     }
+    db.Close()
     return weather, nil
 }
 
-func run_restserver() {
+
+func checkError(err error) {
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+
+func main() {
+    config := readConfig("rest-server.toml")
+    
     api := rest.NewApi()
     api.Use(rest.DefaultDevStack...)
     
     router, err := rest.MakeRouter(
         rest.Get("/api/get", func(w rest.ResponseWriter, req *rest.Request) {
-            data, err := get_weather()
+            data, err := getWeather(config.User, config.Passwd, config.Database)
             if err != nil {
                 rest.Error(w, err.Error(), http.StatusInternalServerError)
                 return
@@ -71,13 +102,7 @@ func run_restserver() {
             w.WriteJson(data)
         }),
     )
-    if err != nil {
-        log.Fatal(err)
-    }
+    checkError(err)
     api.SetApp(router)
     log.Fatal(http.ListenAndServe("0.0.0.0:8080", api.MakeHandler()))
-}
-
-func main() {
-    run_restserver()
 }
