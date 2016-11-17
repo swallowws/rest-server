@@ -8,4 +8,4 @@ before install:
   - go get github.com/go-sql-driver/mysql
   - go get github.com/BurntSushi/toml
 
-install: go build
+install: go build rest-server.go
