@@ -4,11 +4,11 @@ import (
     "database/sql"
     "log"
     "net/http"
+    "os"
     
     "github.com/ant0ine/go-json-rest/rest"
     _ "github.com/go-sql-driver/mysql"
     "github.com/BurntSushi/toml"
-    
 )
 
 
@@ -22,9 +22,8 @@ type tomlConfig struct {
 func readConfig(config_file string) tomlConfig {
     
     var config tomlConfig
-    if _, err := toml.DecodeFile(config_file, &config); err != nil {
-        log.Fatal(err)
-    }
+    _, err := toml.DecodeFile(config_file, &config)
+    checkError(err)
     return config
 }
 
@@ -81,7 +80,8 @@ func getWeather(User, Passwd, Database string) (map[string]string, error) {
 
 func checkError(err error) {
     if err != nil {
-        log.Fatal(err)
+        log.Print(err)
+        os.Exit(0)
     }
 }
 
