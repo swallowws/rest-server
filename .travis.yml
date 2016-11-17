@@ -4,7 +4,9 @@ go:
   - 1.7
   - master
 
-install:
+before install:
   - go get github.com/ant0ine/go-json-rest/rest
   - go get github.com/go-sql-driver/mysql
   - go get github.com/BurntSushi/toml
+
+install: go build
