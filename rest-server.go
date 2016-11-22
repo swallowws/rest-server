@@ -26,6 +26,7 @@ type tomlConfig struct {
     User string
     Passwd string
     Database string
+    Port int
 }
 
 
@@ -95,7 +96,7 @@ func main() {
         config = readConfig(os.Args[1])
     } else {
         fmt.Println("Usage: rest-server <config_file>")
-        os.Exit(0)
+        os.Exit(1)
     }
     
     api := rest.NewApi()
@@ -113,5 +114,5 @@ func main() {
     )
     checkError(err)
     api.SetApp(router)
-    log.Fatal(http.ListenAndServe("0.0.0.0:8080", api.MakeHandler()))
+    log.Fatal(http.ListenAndServe("0.0.0.0:"+fmt.Sprintf("%d", config.Port), api.MakeHandler()))
 }
