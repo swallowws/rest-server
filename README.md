@@ -6,6 +6,8 @@
 
 ### Compiling and running:
 ```
+  cd rest-server
+  go get
   go build rest-server.go
   ./rest-server
 ```
