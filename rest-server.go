@@ -4,6 +4,7 @@ import (
     "database/sql"
     "log"
     "net/http"
+    "fmt"
     "os"
     
     "github.com/ant0ine/go-json-rest/rest"
@@ -12,19 +13,19 @@ import (
 )
 
 
-type tomlConfig struct {
-    User string
-    Passwd string
-    Database string
-}
-
-
 func readConfig(config_file string) tomlConfig {
     
     var config tomlConfig
     _, err := toml.DecodeFile(config_file, &config)
     checkError(err)
     return config
+}
+
+
+type tomlConfig struct {
+    User string
+    Passwd string
+    Database string
 }
 
 
@@ -81,13 +82,21 @@ func getWeather(User, Passwd, Database string) (map[string]string, error) {
 func checkError(err error) {
     if err != nil {
         log.Print(err)
-        os.Exit(0)
+        os.Exit(1)
     }
 }
 
 
-func main() {
-    config := readConfig("rest-server.toml")
+func main() {    
+    
+    var config tomlConfig
+    
+    if len(os.Args) > 1 {
+        config = readConfig(os.Args[1])
+    } else {
+        fmt.Println("Usage: rest-server <config_file>")
+        os.Exit(0)
+    }
     
     api := rest.NewApi()
     api.Use(rest.DefaultDevStack...)

@@ -1,0 +1,23 @@
+[Unit]
+Description=REST-server for Swallow Weather Station
+After=network.target
+After=nginx.service
+After=mysql.service
+Requires=mysql.service
+Requires=network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/rest-server.pid
+WorkingDirectory=/opt/rest-server
+
+User=root
+Group=root
+
+ExecStart=/opt/rest-server/rest-server -c /opt/rest-server/rest-server.toml
+ExecStop=pkill -f rest-server
+ExecReload=pkill -f rest-server && /opt/rest-server/rest-server -c /opt/rest-server/rest-server.toml
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target
