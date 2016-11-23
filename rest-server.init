@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir="/opt/rest-server"
-cmd="$dir/rest-server $dir/rest-server.toml"
+cmd="$dir/rest-server -c $dir/rest-server.toml"
 user="root"
 
 name=`basename $0`
