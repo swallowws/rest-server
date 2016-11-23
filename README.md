@@ -11,10 +11,6 @@
   go build rest-server.go
   ./rest-server -c restserver.toml
 ```
-or
-```
-go run rest-server.go
-```
 
 ### `GET`-request on a client side:
 ```
