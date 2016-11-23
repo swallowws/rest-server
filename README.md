@@ -15,7 +15,7 @@ Set $GOPATH and $GOBIN before running
 
 #### `GET`-request on a client side:
 ```
-$ curl -i <url>:8080/api/get
+$ curl -i weather.thirdpin.ru/api/get
   HTTP/1.1 200 OK
   Content-Type: application/json; charset=utf-8
   X-Powered-By: go-json-rest
