@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir="/opt/rest-server"
-cmd="$dir/rest-server -c $dir/rest-server.toml"
+cmd="$dir/rest-server -c $dir/config.toml"
 user="root"
 
 name=`basename $0`
@@ -41,6 +41,7 @@ case "$1" in
         echo $! > "$pid_file"
         if ! is_running; then
             echo "Unable to start, see $stdout_log and $stderr_log"
+            rm "$pid_file"
             exit 1
         fi
     fi
