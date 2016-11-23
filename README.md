@@ -5,12 +5,12 @@
 
 
 #### Compiling and running:
-Set `$GOPATH` and `$GOBIN` before running 
+Set `$GOPATH` and `$GOBIN` before building 
 ```
   cd rest-server
   go get
   go build rest-server.go
-  ./rest-server -c restserver.toml
+  ./rest-server -c config.toml
 ```
 
 #### `GET`-request on a client side:

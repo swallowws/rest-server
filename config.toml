@@ -5,3 +5,4 @@ Passwd = "weewx"
 Database = "weewx"
 ListenIP = "127.0.0.1"
 ListenPort = 8080
+LogFile = "/tmp/rest-server.log"

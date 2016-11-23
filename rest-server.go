@@ -13,7 +13,7 @@ import (
     "github.com/BurntSushi/toml"
 )
 
-
+    
 func readConfig(config_file string) tomlConfig {
     
     var config tomlConfig
@@ -29,6 +29,7 @@ type tomlConfig struct {
     Database string
     ListenIP string
     ListenPort int
+    LogFile string
 }
 
 
@@ -84,7 +85,7 @@ func getWeather(User, Passwd, Database string) (map[string]string, error) {
 
 func checkError(err error) {
     if err != nil {
-        log.Print(err)
+        log.Println(err)
         os.Exit(1)
     }
 }
@@ -100,10 +101,16 @@ func main() {
     
     if (args.IsSet("c") == true) {
         config = readConfig(args.String("c"))
+        logger, err := os.OpenFile(config.LogFile, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0664)
+        checkError(err)
+        defer logger.Close()
+        log.SetOutput(logger)
     } else {
-        fmt.Println("Usage: rest-server -c <configuration_file>")
+        fmt.Println("Usage: rest-server -c <configuration_file> -l <log_file>")
         os.Exit(1)
     }
+    
+    log.Println("Starting server...")
     
     api := rest.NewApi()
     api.Use(rest.DefaultDevStack...)
@@ -113,7 +120,7 @@ func main() {
             data, err := getWeather(config.User, config.Passwd, config.Database)
             if err != nil {
                 rest.Error(w, err.Error(), http.StatusInternalServerError)
-                return
+                return  
             }
             w.WriteJson(data)
         }),
@@ -121,4 +128,5 @@ func main() {
     checkError(err)
     api.SetApp(router)
     log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d",config.ListenIP, config.ListenPort), api.MakeHandler()))
+    
 }
