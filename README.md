@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/swallowws/rest-server.svg?branch=master)](https://travis-ci.org/swallowws/rest-server)
 
 # REST-server
-*Can be used for Telegram-bots*
+*It can be used for Telegram-bots ot other clients*
 
 
 ### Compiling and running:
@@ -9,7 +9,7 @@
   cd rest-server
   go get
   go build rest-server.go
-  ./rest-server
+  ./rest-server -c restserver.toml
 ```
 or
 ```
