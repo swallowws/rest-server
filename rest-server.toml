@@ -3,4 +3,5 @@
 User = "weewx"
 Passwd = "weewx"
 Database = "weewx"
-Port = 8080
+ListenIP = "127.0.0.1"
+ListenPort = 8080

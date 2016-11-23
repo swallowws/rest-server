@@ -7,6 +7,7 @@ import (
     "fmt"
     "os"
     
+    "github.com/simonleung8/flags"
     "github.com/ant0ine/go-json-rest/rest"
     _ "github.com/go-sql-driver/mysql"
     "github.com/BurntSushi/toml"
@@ -26,7 +27,8 @@ type tomlConfig struct {
     User string
     Passwd string
     Database string
-    Port int
+    ListenIP string
+    ListenPort int
 }
 
 
@@ -44,7 +46,7 @@ func getWeather(User, Passwd, Database string) (map[string]string, error) {
         return weather, err
     }
     
-    rows, err := db.Query("SELECT * FROM raw LIMIT 1")
+    rows, err := db.Query("SELECT * FROM raw ORDER BY dateTime DESC LIMIT 1")
     if err != nil {
         return weather, err
     }
@@ -92,10 +94,14 @@ func main() {
     
     var config tomlConfig
     
-    if len(os.Args) > 1 {
-        config = readConfig(os.Args[1])
+    args := flags.New()
+    args.NewStringFlag("config", "c", "configuration_file")
+    args.Parse(os.Args...)
+    
+    if (args.IsSet("c") == true) {
+        config = readConfig(args.String("c"))
     } else {
-        fmt.Println("Usage: rest-server <config_file>")
+        fmt.Println("Usage: rest-server -c <configuration_file>")
         os.Exit(1)
     }
     
@@ -114,5 +120,5 @@ func main() {
     )
     checkError(err)
     api.SetApp(router)
-    log.Fatal(http.ListenAndServe("0.0.0.0:"+fmt.Sprintf("%d", config.Port), api.MakeHandler()))
+    log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d",config.ListenIP, config.ListenPort), api.MakeHandler()))
 }
