@@ -5,7 +5,7 @@
 
 
 #### Compiling and running:
-Set $GOPATH and $GOBIN before running 
+Set `$GOPATH` and `$GOBIN` before running 
 ```
   cd rest-server
   go get
