@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.org/swallowws/rest-server.svg?branch=master)](https://travis-ci.org/swallowws/rest-server)
 
 # REST-server
-*It can be used for Telegram-bots ot other clients*
+*It can be used for Telegram-bots or other clients*
 
 
-### Compiling and running:
+#### Compiling and running:
 Set $GOPATH and $GOBIN before running 
 ```
   cd rest-server
@@ -13,7 +13,7 @@ Set $GOPATH and $GOBIN before running
   ./rest-server -c restserver.toml
 ```
 
-### `GET`-request on a client side:
+#### `GET`-request on a client side:
 ```
 $ curl -i <url>:8080/api/get
   HTTP/1.1 200 OK
