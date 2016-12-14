@@ -16,26 +16,30 @@ Set `$GOPATH` and `$GOBIN` before building
 #### `GET`-request on a client side:
 ```
 $ curl -i weather.thirdpin.ru/api/get
-  HTTP/1.1 200 OK
-  Content-Type: application/json; charset=utf-8
-  X-Powered-By: go-json-rest
-  Date: Mon, 14 Nov 2016 15:13:29 GMT
-  Content-Length: 379
+HTTP/1.1 200 OK
+Server: nginx/1.4.6 (Ubuntu)
+Date: Wed, 14 Dec 2016 07:33:27 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 358
+Connection: keep-alive
+X-Powered-By: go-json-rest
 
-  {
-    "dateTime": "1477298259",
-    "deltarain": "NULL",
-    "geiger": "NULL",
-    "illumination": "NULL",
-    "inTemp": "17.2222291675031",
-    "interval": "0",
-    "long_term_geiger": "NULL",
-    "long_term_rain": "NULL",
-    "outHumidity": "79.9999812477357",
-    "outTemp": "100",
-    "pressure": "1053.04597883494",
-    "usUnits": "16",
-    "windDir": "360",
-    "windSpeed": "0.00000502980732661427"
+{
+  "dateTime": "1481700727",
+  "deltarain": "0",
+  "downfall": "0",
+  "geiger": "1",
+  "illumination": "187",
+  "inTemp": "3",
+  "interval": "0",
+  "long_term_geiger": "135699",
+  "long_term_rain": "97",
+  "maxWind": "4.00",
+  "outHumidity": "40.4",
+  "outTemp": "-1.80",
+  "pressure": "1012.3",
+  "usUnits": "16",
+  "windDir": "270",
+  "windSpeed": "2.7"
 }
 ```
